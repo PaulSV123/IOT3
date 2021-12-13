@@ -85,4 +85,15 @@ Lista de consultas:
 ## Removing Data Records Completely
 Para este último ejercicio, a continuación presentamos la imagen que describe los módulos para realizar la purga, la estructura la puede encontrar en el archivo ‘Cap9_4’.
 
-![N|Img13](https://lh5.googleusercontent.com/jEs-eu7dhe6RqeklIGsKVjrwPxC6PKuipUAJSa2S25U2iAmJCPLEWQDTmF08fz6hZz8WYGOeVvBbgOI1DI41kF6Lpyo5ev61w4wjDHVEzFThHx1oiiuRAVpLn_b0f1yTGdfa5IV-)
+![N|Img14](https://lh5.googleusercontent.com/jEs-eu7dhe6RqeklIGsKVjrwPxC6PKuipUAJSa2S25U2iAmJCPLEWQDTmF08fz6hZz8WYGOeVvBbgOI1DI41kF6Lpyo5ev61w4wjDHVEzFThHx1oiiuRAVpLn_b0f1yTGdfa5IV-)
+
+Para realizar la eliminación de un registro, debemos pasar por el anterior ejercicio, el cual marcaba un registro para ser eliminado, ahora con este ejercicio de purga, podemos realizar el proceso de eliminación completamente, la url para ejecutar es :
+
+```
+localhost:1880/purge/mytimestamp/id/3
+```
+Resultado:
+
+El registro 3 marcado como deleted, ahora se elimino, con esto concluimos las actividades.
+
+![N|Img15](https://lh4.googleusercontent.com/VpncIkYVO8CJWBznK_nrRBDBK8DrqUErD0v0wn4NwtxHmDaLDRXrVeLv6RBGGK3mliQ94-f-fvMwtK_mIZ5eF7A-LOdiE0lTA9Fd8lPXmVer4FjGOpZX6pv0MpseBA2fdl73qG_r)
