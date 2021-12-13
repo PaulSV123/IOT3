@@ -74,11 +74,17 @@ Lista de consultas:
   - Ejecutaremos el primer bloque el cual se encarga de cambiar el estado de la columna ‘deleted’ de la base de datos a ‘1 donde estará marcado para ser eliminado en futuros pasos, se mostrará los resultados cuando le mandamos un id valida y otra incorrecta, la url de ejecución es:
   localhost:1880/delete/timestamp/id/34 o /3
   Resultados en Postman:
+  
   Incorrecto
+  
   ![N|Img11](https://lh5.googleusercontent.com/jgKDja9JZ_555lWAEjQcrwVpYVCcvwTL6BIJjna4tfU5y4nnBtvgMZVjrZYg-rGJYXpDc24_l5Quq1Kbhs-t6Qw96lnNfXzIrCGTEAZH5z_b0Wzk8-Xfa0WzGFqN4Yx1oTldOiPz)
+  
   Correcto
+  
   ![N|Img12](https://lh5.googleusercontent.com/WV0Il8S7BtDlwUGodxk4GHdY6gyQX9W-P6YxNEzmoSfIONFh9hhdA26RyT8f1ye49TYDv_AfMM2WoUqIKOU91TXrOxpiLFy9cmo6ugZn_PBFHrhJ-5Uq1CjxCDeQNl2QfcofD9F4)
+  
   Registro con id=3 cambiado de BD:
+  
   ![N|Img13](https://lh3.googleusercontent.com/AuNic3b6uy8FLdSCQh6NaSlmfd-UdNRWFfjbGqSBXhNFban2okm98uYCmHW7w_uPgCTSS_Mij05utMsS1dgB64RXcdfwcHbcPDUJ3eiGFBrsZNmtRLP-f1KzVo3MyXLJDxoBA8xR)
 
 ## Removing Data Records Completely
