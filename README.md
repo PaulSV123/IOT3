@@ -43,6 +43,7 @@ Lista de consultas:
 
 ## Adding Time-Based Filters
 En la siguiente imagen tenemos los módulos que necesitamos para ejecutar el siguiente ejercicio de filtros, este archivo json tiene el nombre de “Cap9_2”.
+
 ![N|Img6](https://lh6.googleusercontent.com/avO6KgZph7HHqkODN9nr85C2i4GuWahsx_km4qI74eDwSDKB6QLzYqJHlNmqHYaQK_HR6qz7Hef4bPDi1x3CHBxOejk0tmKgj40z2n5WqmzCUwSynURpDwgIh3fI-zA4AkZVKNoK)
 
 Lista de consultas:
