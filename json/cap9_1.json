@@ -1,0 +1,100 @@
+[
+    {
+        "id": "b8122645dd8a0647",
+        "type": "tab",
+        "label": "Cap9_1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "a6b64ac30ef1172b",
+        "type": "http in",
+        "z": "b8122645dd8a0647",
+        "name": "",
+        "url": "/get/topicLike/:topic/payloadLike/:payload/last/:count",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 310,
+        "y": 140,
+        "wires": [
+            [
+                "4205edf359167ff7"
+            ]
+        ]
+    },
+    {
+        "id": "4205edf359167ff7",
+        "type": "function",
+        "z": "b8122645dd8a0647",
+        "name": "Create query",
+        "func": "if(!msg.req.authFilter)\n    msg.req.authFilter = 1;\nmsg.topic = \"SELECT id,topic,payload,timestamp FROM thingData WHERE topic LIKE '\" + msg.req.params.topic.replace(/\\*/g, \"%\") + \"'\" + \" AND\" + \" payload LIKE '\" + msg.req.params.payload.replace(/\\*/g, \"%\") + \"'\" + \" AND deleted=0\" + \" AND (\" + msg.req.authFilter + \")\" + \" ORDER BY ID DESC\" + \" LIMIT \" + msg.req.params.count +\";\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 200,
+        "wires": [
+            [
+                "9478dd6ea3ec1855"
+            ]
+        ]
+    },
+    {
+        "id": "9478dd6ea3ec1855",
+        "type": "mysql",
+        "z": "b8122645dd8a0647",
+        "mydb": "fbcb2b59cc62c2b1",
+        "name": "",
+        "x": 500,
+        "y": 260,
+        "wires": [
+            [
+                "762519a5f2c15c74"
+            ]
+        ]
+    },
+    {
+        "id": "762519a5f2c15c74",
+        "type": "function",
+        "z": "b8122645dd8a0647",
+        "name": "prepare response",
+        "func": "// Prepare response\nmsg.payload = {\n \"id\": msg.id,\n \"topic\": msg.topic,\n \"payload\": msg.payload,\n \"timestamp\": msg.timestamp\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 530,
+        "y": 340,
+        "wires": [
+            [
+                "c0d5bb7e0b439be5"
+            ]
+        ]
+    },
+    {
+        "id": "c0d5bb7e0b439be5",
+        "type": "http response",
+        "z": "b8122645dd8a0647",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 530,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "fbcb2b59cc62c2b1",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "172.19.0.1",
+        "port": "3306",
+        "db": "tSeriesDB",
+        "tz": "",
+        "charset": "UTF8"
+    }
+]

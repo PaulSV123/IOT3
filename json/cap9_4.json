@@ -1,0 +1,208 @@
+[
+    {
+        "id": "c3052f69b9851b0e",
+        "type": "tab",
+        "label": "Cap9_4",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "548b3a3823fbba39",
+        "type": "http in",
+        "z": "c3052f69b9851b0e",
+        "name": "",
+        "url": "/purge/:topic/id/:id",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 140,
+        "y": 100,
+        "wires": [
+            [
+                "99578256024c2623"
+            ]
+        ]
+    },
+    {
+        "id": "7dbde8fee5fde424",
+        "type": "http in",
+        "z": "c3052f69b9851b0e",
+        "name": "",
+        "url": "/purge/:topic",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 160,
+        "y": 160,
+        "wires": [
+            [
+                "be56f963b4f41533"
+            ]
+        ]
+    },
+    {
+        "id": "d6ab87f756ea0f47",
+        "type": "http in",
+        "z": "c3052f69b9851b0e",
+        "name": "",
+        "url": "/purge/:topic/first/:count",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 120,
+        "y": 220,
+        "wires": [
+            [
+                "28c81a9f29a407be"
+            ]
+        ]
+    },
+    {
+        "id": "5eb0c574cb80a1cf",
+        "type": "http in",
+        "z": "c3052f69b9851b0e",
+        "name": "",
+        "url": "/purge/:topic/last/:count",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 120,
+        "y": 280,
+        "wires": [
+            [
+                "2cdf97cc25efeb1f"
+            ]
+        ]
+    },
+    {
+        "id": "99578256024c2623",
+        "type": "function",
+        "z": "c3052f69b9851b0e",
+        "name": "",
+        "func": "// if no authentication filter defined or available\n// set the default value as 1\nif(!msg.req.authFilter)\n msg.req.authFilter = 1;\nmsg.topic = \"DELETE thingData\" +\n \" WHERE deleted=1\" +\n \" AND\" +\n \" topic='\" + msg.req.params.topic + \"'\" +\n \" AND (\" + msg.req.authFilter + \")\" +\n \" AND id=\" + msg.req.params.id + \";\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 100,
+        "wires": [
+            [
+                "aaf5a83981d9306d"
+            ]
+        ]
+    },
+    {
+        "id": "be56f963b4f41533",
+        "type": "function",
+        "z": "c3052f69b9851b0e",
+        "name": "",
+        "func": "// Purge several records\n// if no authentication filter defined or available\n// set the default value as 1\nif(!msg.req.authFilter)\n msg.req.authFilter = 1;\nmsg.topic = \"DELETE thingData\" +\n \" WHERE deleted=1\" +\n \" AND\" +\n \" topic='\" + msg.req.params.topic + \"'\" +\n \" AND (\" + msg.req.authFilter + \");\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 160,
+        "wires": [
+            [
+                "aaf5a83981d9306d"
+            ]
+        ]
+    },
+    {
+        "id": "28c81a9f29a407be",
+        "type": "function",
+        "z": "c3052f69b9851b0e",
+        "name": "",
+        "func": "// Purge first few records\n// if required record count is not specified\n// set default to 1\nif(!msg.req.params.count)\n msg.req.params.count = 1;\n// if no authentication filter defined or available\n// set the default value as 1\nif(!msg.req.authFilter)\n msg.req.authFilter = 1;\nmsg.topic = \"DELETE thingData\" +\n \" WHERE deleted=1\" +\n \" AND\" +\n \" topic='\" + msg.req.params.topic + \"'\" +\n \" AND (\" + msg.req.authFilter + \")\" +\n \" ORDER BY id ASC LIMIT \" + msg.req.params.count +\n\";\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 220,
+        "wires": [
+            [
+                "aaf5a83981d9306d"
+            ]
+        ]
+    },
+    {
+        "id": "2cdf97cc25efeb1f",
+        "type": "function",
+        "z": "c3052f69b9851b0e",
+        "name": "",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 280,
+        "wires": [
+            [
+                "aaf5a83981d9306d"
+            ]
+        ]
+    },
+    {
+        "id": "aaf5a83981d9306d",
+        "type": "mysql",
+        "z": "c3052f69b9851b0e",
+        "mydb": "fbcb2b59cc62c2b1",
+        "name": "",
+        "x": 640,
+        "y": 220,
+        "wires": [
+            [
+                "d8bc999ea11f3c12"
+            ]
+        ]
+    },
+    {
+        "id": "d8bc999ea11f3c12",
+        "type": "function",
+        "z": "c3052f69b9851b0e",
+        "name": "prepare response",
+        "func": "msg.payload = {\n \"found\": msg.payload.affectedRows,\n \"changed\": msg.payload.changedRows,\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 360,
+        "wires": [
+            [
+                "823a47cdfc4c15ee"
+            ]
+        ]
+    },
+    {
+        "id": "823a47cdfc4c15ee",
+        "type": "http response",
+        "z": "c3052f69b9851b0e",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 650,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "fbcb2b59cc62c2b1",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "172.19.0.1",
+        "port": "3306",
+        "db": "tSeriesDB",
+        "tz": "",
+        "charset": "UTF8"
+    }
+]

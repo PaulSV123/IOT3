@@ -1,0 +1,173 @@
+[
+    {
+        "id": "2271f7abc6c29851",
+        "type": "tab",
+        "label": "Cap9_2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "8b8ad6dbd5b61d06",
+        "type": "http in",
+        "z": "2271f7abc6c29851",
+        "name": "",
+        "url": "/get/:topic/after/:time/last/:count",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 160,
+        "y": 140,
+        "wires": [
+            [
+                "6b63a2f3fd3d1dc9"
+            ]
+        ]
+    },
+    {
+        "id": "3d268629facb5a3b",
+        "type": "http in",
+        "z": "2271f7abc6c29851",
+        "name": "",
+        "url": "/get/:topic/before/:time/last/:count",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 170,
+        "y": 200,
+        "wires": [
+            [
+                "3f72feba6874986d"
+            ]
+        ]
+    },
+    {
+        "id": "62857a2458864a7c",
+        "type": "http in",
+        "z": "2271f7abc6c29851",
+        "name": "",
+        "url": "/get/:topic/during/:start/:end/last/:count",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 180,
+        "y": 260,
+        "wires": [
+            [
+                "4b576be2ea942042"
+            ]
+        ]
+    },
+    {
+        "id": "6b63a2f3fd3d1dc9",
+        "type": "function",
+        "z": "2271f7abc6c29851",
+        "name": "Create 'AFTER' query",
+        "func": "if(!msg.req.authFilter)\n    msg.req.authFilter = 1;\nmsg.topic = \"SELECT id,topic,payload,timestamp\" +\n \" FROM thingData WHERE\" +\n \" topic LIKE '\" + msg.req.params.topic.\nreplace(/\\*/g, \"%\") + \"'\" +\n \" AND\" +\n \" timestamp >= '\" + msg.req.params.time + \"'\" +\n \" AND deleted=0\" +\n \" AND (\" + msg.req.authFilter + \")\" +\n \" ORDER BY ID DESC\" +\n \" LIMIT \" + msg.req.params.count + \";\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 140,
+        "wires": [
+            [
+                "5195d0db27a45007"
+            ]
+        ]
+    },
+    {
+        "id": "3f72feba6874986d",
+        "type": "function",
+        "z": "2271f7abc6c29851",
+        "name": "Create 'BEFORE' query",
+        "func": "if(!msg.req.authFilter)\n    msg.req.authFilter = 1;\nmsg.topic = \"SELECT id,topic,payload,timestamp\" +\n \" FROM thingData WHERE\" +\n \" topic LIKE '\" + msg.req.params.topic.\nreplace(/\\*/g, \"%\") + \"'\" +\n \" AND\" +\n \" timestamp <= '\" + msg.req.params.time + \"'\" +\n \" AND deleted=0\" +\n \" AND (\" + msg.req.authFilter + \")\" +\n \" ORDER BY ID DESC\" +\n \" LIMIT \" + msg.req.params.count + \";\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 200,
+        "wires": [
+            [
+                "5195d0db27a45007"
+            ]
+        ]
+    },
+    {
+        "id": "4b576be2ea942042",
+        "type": "function",
+        "z": "2271f7abc6c29851",
+        "name": "Create 'DURING' query",
+        "func": "if(!msg.req.authFilter)\n    msg.req.authFilter = 1;\n\nmsg.topic = \"SELECT id,topic,payload,timestamp\" +\n \" FROM thingData WHERE\" +\n \" topic LIKE '\" + msg.req.params.topic.\nreplace(/\\*/g, \"%\") + \"'\" +\n \" AND\" + \" timestamp >= '\" + msg.req.params.start + \"'\" +\n \" AND\" +\n \" timestamp <='\" + msg.req.params.end + \"'\" +\n \" AND deleted=0\" +\n \" AND (\" + msg.req.authFilter + \")\" +\n \" ORDER BY ID DESC\" +\n \" LIMIT \" + msg.req.params.count + \";\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 260,
+        "wires": [
+            [
+                "5195d0db27a45007"
+            ]
+        ]
+    },
+    {
+        "id": "5195d0db27a45007",
+        "type": "mysql",
+        "z": "2271f7abc6c29851",
+        "mydb": "fbcb2b59cc62c2b1",
+        "name": "",
+        "x": 680,
+        "y": 200,
+        "wires": [
+            [
+                "1f46b473900e4c26"
+            ]
+        ]
+    },
+    {
+        "id": "74167b1b08d2fbf5",
+        "type": "http response",
+        "z": "2271f7abc6c29851",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 690,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "1f46b473900e4c26",
+        "type": "function",
+        "z": "2271f7abc6c29851",
+        "name": "prepare response",
+        "func": "// Prepare response\nmsg.payload = {\n \"id\": msg.id,\n \"topic\": msg.topic,\n \"payload\": msg.payload,\n \"timestamp\": msg.timestamp\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 340,
+        "wires": [
+            [
+                "74167b1b08d2fbf5"
+            ]
+        ]
+    },
+    {
+        "id": "fbcb2b59cc62c2b1",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "172.19.0.1",
+        "port": "3306",
+        "db": "tSeriesDB",
+        "tz": "",
+        "charset": "UTF8",
+        "credentials": {}
+    }
+]

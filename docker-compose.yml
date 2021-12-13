@@ -1,0 +1,50 @@
+version: '3'
+ 
+services:
+  node-red:
+    image: nodered/node-red:latest
+    container_name: node-red
+    networks:
+      - von
+    ports:
+    - "1880:1880"
+
+  mosquitto:
+    image: eclipse-mosquitto:1.6
+    container_name: mosquitto
+    networks:
+      - von
+    ports: 
+    - "9001:9001"
+    - "1883:1883"
+  db:
+    image: mysql:5.7
+    container_name: db
+    networks:
+      - von
+    environment:
+      MYSQL_ROOT_PASSWORD: my_secret_password
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD: db_user_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    networks:
+      - von
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 80:80
+networks:
+  von:
+  
+volumes:
+  dbdata:
